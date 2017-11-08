@@ -1,5 +1,10 @@
 import { Component } from 'react';
-import { FetchingData, Startup, PackageManager } from './components/index';
+import {
+  FetchingData,
+  Startup,
+  PackageManager,
+  ErrorBoundry
+} from './components/index';
 
 export default class App extends Component {
 
@@ -40,10 +45,14 @@ export default class App extends Component {
       case 'startup':
         return <Startup nextPage={this.nextPage} />;
       case 'fetching-data':
-        return <FetchingData
-          nextPage={this.nextPage}
-          path={this.state.nextPageData}
-        />;
+        return (
+          <ErrorBoundry>
+            <FetchingData
+              nextPage={this.nextPage}
+              path={this.state.nextPageData}
+            />
+          </ErrorBoundry>
+        );
       case 'package-manager':
         return <PackageManager
           json={this.state.nextPageData}

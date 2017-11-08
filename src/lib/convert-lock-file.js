@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import process from 'process';
+import JSONFile from 'jsonfile';
 
 
 function toObject(dir, pathToWrapper) {
@@ -31,10 +32,9 @@ function toJson (dir, pathToWrapper) {
  *
  * Returns a promise for later consumption.
  *
- * If the file in question (the yarn.lock) doesn't exist
- * we return false instead of throwing an error.
+ * Throw an error if the file doesnt exist.
  */
-const convertYarnLockToJSON = (pathToProject) => {
+export const convertYarnLockToJSON = (pathToProject) => {
   const file = pathToProject + '/yarn.lock';
   const exists = fs.existsSync(file);
 
@@ -44,10 +44,32 @@ const convertYarnLockToJSON = (pathToProject) => {
   );
 
   if (!exists) {
-    // figure this out later.
+    throw new Error('No yarn.lock file found.');
   }
 
   return toJson(pathToProject, pathToWrapper);
 };
 
-export default convertYarnLockToJSON;
+/**
+ * Get the package-lock.json info.
+ *
+ * If  the file is not found or cannot be read, throw an error.
+ *
+ * Return the JSON of the file.
+ */
+export const getPackageLockInfo = (pathToProject) => {
+  const file = pathToProject + '/package-lock.json';
+  const exists = fs.existsSync(file);
+
+  if (!exists) {
+    throw new Error('No package-lock.json file found.');
+  }
+
+  return JSONFile.readFile(file, (err, obj) => {
+    if (err) {
+      throw new Error(err);
+    }
+
+    return obj;
+  });
+};

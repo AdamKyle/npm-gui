@@ -57,7 +57,7 @@ export default class Startup extends Component {
 
   render() {
     return (
-      <div className='row center-to-the-app'>
+      <div className='row center-to-the-app-form'>
         <form onSubmit={this.handleOnSubmit}>
           <div className='input-field col s12'>
             <i className='material-icons prefix'>account_circle</i>

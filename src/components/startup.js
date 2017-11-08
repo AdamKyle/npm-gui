@@ -48,7 +48,10 @@ export default class Startup extends Component {
       }
 
       // Move to fetching data
-      this.props.nextPage('fetching-data');
+      this.props.nextPage(
+        'fetching-data',
+        path.join(process.env.HOME, e.target.value)
+      );
     }
   }
 

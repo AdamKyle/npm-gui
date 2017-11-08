@@ -8,17 +8,15 @@
   "dependencies": {
     "css-loader": "^0.28.7",
     "electron-prebuilt": "^1.4.13",
-    "electron-reload": "^1.2.2",
-    "is-electron-renderer": "^2.0.1",
     "node-sass": "^4.6.0",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
-    "react-router": "^4.2.0",
-    "react-router-dom": "^4.2.2",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.19.0",
     "webpack": "^3.8.1",
-    "webpack-dev-server": "^2.9.4"
+    "webpack-dev-server": "^2.9.4",
+    "yamljs": "^0.3.0",
+    "yarn-lock-convert": "^1.0.1"
   },
   "scripts": {
     "electron": "eslint src/ && webpack && electron ."

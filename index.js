@@ -6,8 +6,6 @@ const app           = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 let mainWindow       = null;
 
-require('electron-reload')(__dirname);
-
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit();
 });

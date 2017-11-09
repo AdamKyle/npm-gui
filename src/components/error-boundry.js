@@ -5,6 +5,8 @@ export default class ErrorBoundry extends Component {
     super(props);
 
     this.state = {};
+
+    this.openNewIssue = this.openNewIssue.bind(this);
   }
 
   componentDidCatch(err) {
@@ -12,6 +14,12 @@ export default class ErrorBoundry extends Component {
       hasError: true,
       errorMessage: err
     });
+  }
+
+  openNewIssue(e) {
+    e.preventDefault();
+    const shell = window.require('electron').shell;
+    shell.openExternal('https://github.com/AdamKyle/npm-gui/issues/new');
   }
 
   render() {
@@ -22,7 +30,15 @@ export default class ErrorBoundry extends Component {
           <div className="center-to-the-app-content">
             <h3>Uh Oh! We have an error.</h3>
             <p>You have no package-lock.json or yarn.lock</p>
-
+            <p>
+              There may be more information in which you can use to open an <a onClick={this.openNewIssue} href="#">issue</a>
+            </p>
+            <hr />
+            <details>
+              {this.state.errorMessage && this.state.errorMessage.toString()}
+              <br />
+              {this.state.errorMessage.componentStack}
+            </details>
           </div>
         </div>
       );

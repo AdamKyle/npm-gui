@@ -1,4 +1,18 @@
 @import './components/icons';
+@import './components/notification';
+@import './components/card';
+
+i {
+  color: #fff;
+}
+
+input[type="text"] {
+  color: #fff;
+}
+
+.container {
+  color: #fff;
+}
 
 .center-to-the-app-form {
   position: absolute;

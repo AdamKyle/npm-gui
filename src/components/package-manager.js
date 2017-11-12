@@ -1,4 +1,7 @@
 import { Component } from 'react';
+import Navigation from './navigation';
+import { getDependencies } from './package-manager-dependencies';
+
 
 export default class PackageManager extends Component {
   constructor(props) {
@@ -6,42 +9,64 @@ export default class PackageManager extends Component {
 
     this.state = {
       usingMessage: this.props.isYarn ? 'We see you are using yarn. We will stick to that :)' : 'We see you are using npm. We will stick to that :)',
-      data: JSON.parse(this.props.json),
+      data: this.props.json,
+      packageJSON: this.props.packageJSON,
+      packageInformation: [],
     };
+
+    this.coreDependencies = this.coreDependencies.bind(this);
+    this.devDependencies = this.devDependencies.bind(this);
+
+    console.log(this.state); //eslint-disable-line
   }
 
-  allPackages() {
-    const packageCards = [];
+  componentDidMount() {
+    this.coreDependencies();
+  }
 
-    for (const prop in this.state.data) {
-      packageCards.push(
-        <div className='col s4' key={prop}>
-          <div className='card blue-grey darken-1'>
-            <div className='card-content white-text'>
-              <span className='card-title'>{prop.split('@')[0]}</span>
-              <p>
-                <strong>version</strong>: {this.state.data[prop].version}
-              </p>
-            </div>
-            <div className='card-action'>
-              <a href='#'>Update</a>
-              <a href='#'>Remove</a>
-            </div>
-          </div>
-        </div>
-      );
+  coreDependencies(e) {
+    if (e) {
+      e.preventDefault();
     }
 
-    return packageCards;
+    const dependencies = getDependencies(
+      this.state.packageJSON.dependencies,
+      this.state.data.dependencies
+    );
+
+    this.setState({
+      packageInformation: dependencies,
+    });
+  }
+
+  devDependencies(e) {
+    if (e) {
+      e.preventDefault();
+    }
+
+    const dependencies = getDependencies(
+      this.state.packageJSON.devDependencies,
+      this.state.data.dependencies
+    );
+
+    this.setState({
+      packageInformation: dependencies,
+    });
   }
 
   render() {
     return (
-      <div className='container'>
-        <div className='row'>
-          {this.allPackages()}
+      <div>
+        <Navigation
+          coreDependencies={this.coreDependencies}
+          devDependencies={this.devDependencies}
+        />
+        <div className='container'>
+          <div className='row'>
+            {this.state.packageInformation}
+          </div>
+          <div className='notify peek'>{ this.state.usingMessage }</div>
         </div>
-        <div className='notify peek'>{ this.state.usingMessage }</div>
       </div>
     );
   }

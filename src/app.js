@@ -31,7 +31,8 @@ export default class App extends Component {
         this.setState({
           page: 'package-manager',
           nextPageData: dataForComponent.data,
-          isYarn: dataForComponent.isYarn
+          isYarn: dataForComponent.isYarn,
+          packageJSON: dataForComponent.packageJSON,
         });
         break;
       default:
@@ -57,6 +58,7 @@ export default class App extends Component {
         return <PackageManager
           json={this.state.nextPageData}
           isYarn={this.state.isYarn}
+          packageJSON={this.state.packageJSON}
         />;
       default:
         // By default just return the startup page.

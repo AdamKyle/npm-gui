@@ -29,7 +29,7 @@ export default class ErrorBoundry extends Component {
         <div className="container">
           <div className="center-to-the-app-content">
             <h3>Uh Oh! We have an error.</h3>
-            <p>You have no package-lock.json or yarn.lock</p>
+            <p>You Might not have a package-lock.json or yarn.lock or their might be a problem with your package.json</p>
             <p>
               There may be more information in which you can use to open an <a onClick={this.openNewIssue} href="#">issue</a>
             </p>

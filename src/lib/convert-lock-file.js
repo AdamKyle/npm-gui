@@ -21,9 +21,7 @@ function toObject(dir, pathToWrapper) {
 
 function toJson (dir, pathToWrapper) {
   return toObject(dir, pathToWrapper).then((answer) => {
-    const json = JSON.stringify(answer);
-
-    return json;
+    return answer;
   });
 }
 
@@ -65,11 +63,5 @@ export const getPackageLockInfo = (pathToProject) => {
     throw new Error('No package-lock.json file found.');
   }
 
-  return JSONFile.readFile(file, (err, obj) => {
-    if (err) {
-      throw new Error(err);
-    }
-
-    return obj;
-  });
+  return JSONFile.readFileSync(file);
 };

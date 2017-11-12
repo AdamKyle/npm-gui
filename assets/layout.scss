@@ -1,6 +1,8 @@
 @import './components/icons';
 @import './components/notification';
 @import './components/card';
+@import './components/nav';
+@import './components/button';
 
 i {
   color: #fff;
@@ -12,6 +14,7 @@ input[type="text"] {
 
 .container {
   color: #fff;
+  margin-top: 20px;
 }
 
 .center-to-the-app-form {

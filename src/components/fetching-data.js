@@ -4,13 +4,20 @@ import {
   getPackageLockInfo
 } from '../lib/convert-lock-file';
 
+import { fetchPackageJSON } from '../lib/fetch-package-json';
+import renameKeys from 'rename-keys';
+
 
 export default class FetchingData extends Component {
 
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      data: {},
+      isYarn: false,
+      packageJSON: {},
+    };
   }
 
   componentDidMount() {
@@ -24,17 +31,40 @@ export default class FetchingData extends Component {
     }
   }
 
+  componentDidUpdate() {
+    this.props.nextPage('package-manager', this.state);
+  }
+
   fatchYarnData() {
-    convertYarnLockToJSON(this.props.path).then(function(data) {
-      // Go to the next page.
-      this.props.nextPage('package-manager', {data: data, isYarn: true});
+    convertYarnLockToJSON(this.props.path).then(function(jsonData) {
+      const yarnData = renameKeys(jsonData, (key) => {
+        return key.split('@')[0];
+      });
+
+      yarnData['dependencies'] = yarnData;
+
+      this.setState({
+        data: yarnData,
+        isYarn: true,
+        packageJSON: this.fetchPackageJsonData(),
+      });
     }.bind(this));
   }
 
   fetchPackageLockData() {
     try {
-      const JSONData = getPackageLockInfo(this.props.path);
-      this.props.nextPage('package-manager', {data: JSONData, isyarn: false});
+      this.setState({
+        data: getPackageLockInfo(this.props.path),
+        packageJSON: this.fetchPackageJsonData(),
+      });
+    } catch (err) {
+      throw new Error(err);
+    }
+  }
+
+  fetchPackageJsonData() {
+    try {
+      return fetchPackageJSON(this.props.path);
     } catch (err) {
       throw new Error(err);
     }

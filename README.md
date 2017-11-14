@@ -8,7 +8,14 @@ API to fetch data about your particular project.
 
 ## How does it work?
 
-You launch the application and enter the directory to your project. For example: `/Documents/project-name/`
-We then determine if you use Yarn or Regular NPM (via either the `yarn.lock` or the `package-lock.json`)
+![Startup](https://i.imgur.com/EALOZLP.png)
 
-From there we inform you that we will continue with either yarn or npm.
+When you launch the application we ask you for a directory to your main application.
+This application should contain either: `yarn.lock` or `package-lock.json` and a `package.json`.
+
+Once you enter the path to your application we then fetch the appropriate data and show you:
+
+![Manage Application](https://i.imgur.com/tDeAeEP.png)
+
+From here you can manage the Dev Dependencies and the Core Dependencies. You get to see basic information including
+version and name and you have the option to update and delete the package.

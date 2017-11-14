@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import Navigation from './navigation';
-import { getDependencies } from './package-manager-dependencies';
-
+import Dependencies from './package-manager/dependencies';
+import { findFromLockFile } from '../lib/find-package-information';
 
 export default class PackageManager extends Component {
   constructor(props) {
@@ -12,49 +12,56 @@ export default class PackageManager extends Component {
       data: this.props.json,
       packageJSON: this.props.packageJSON,
       packageInformation: [],
+      showAlert: false,
+      showing: 'dependencies'
     };
 
     this.coreDependencies = this.coreDependencies.bind(this);
     this.devDependencies = this.devDependencies.bind(this);
-
-    console.log(this.state); //eslint-disable-line
-  }
-
-  componentDidMount() {
-    this.coreDependencies();
+    this.buildPackageMetaComponents = this.buildPackageMetaComponents.bind(this);
   }
 
   coreDependencies(e) {
-    if (e) {
-      e.preventDefault();
-    }
+    e.preventDefault();
 
-    const dependencies = getDependencies(
-      this.state.packageJSON.dependencies,
-      this.state.data.dependencies
-    );
-
-    this.setState({
-      packageInformation: dependencies,
-    });
+    this.buildPackageMetaComponents(this.state.packageJSON.dependencies, true, 'dependencies');
   }
 
   devDependencies(e) {
-    if (e) {
-      e.preventDefault();
+    e.preventDefault();
+
+    this.buildPackageMetaComponents(this.state.packageJSON.devDependencies, true, 'development dependencies');
+  }
+
+  buildPackageMetaComponents(dependencies, showAlert, showing) {
+    let packageDetailComponents = [];
+
+    for(const prop in dependencies) {
+      const packageMeta = findFromLockFile(prop, this.state.data.dependencies);
+
+      packageDetailComponents.push(
+        <Dependencies packageMeta={packageMeta} key={packageMeta.name} />
+      );
     }
 
-    const dependencies = getDependencies(
-      this.state.packageJSON.devDependencies,
-      this.state.data.dependencies
-    );
-
     this.setState({
-      packageInformation: dependencies,
+      packageDetailComponents: packageDetailComponents,
+      showAlert: showAlert ? showAlert : false,
+      showing: showing ? showing : 'dependencies',
     });
   }
 
+  componentDidMount() {
+    this.buildPackageMetaComponents(this.state.packageJSON.dependencies);
+  }
+
   render() {
+    let showAlert = '';
+
+    if (this.state.showAlert) {
+      showAlert = <div className="notify peek">Showing {this.state.showing}</div>;
+    }
+
     return (
       <div>
         <Navigation
@@ -63,9 +70,10 @@ export default class PackageManager extends Component {
         />
         <div className='container'>
           <div className='row'>
-            {this.state.packageInformation}
+            {this.state.packageDetailComponents}
           </div>
           <div className='notify peek'>{ this.state.usingMessage }</div>
+          {showAlert}
         </div>
       </div>
     );

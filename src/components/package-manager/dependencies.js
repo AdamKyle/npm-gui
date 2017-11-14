@@ -16,9 +16,9 @@ class Dependencies extends Component {
     if (packageData.pending) {
       return null;
     } else if (packageData.fulfilled) {
-      let isUpToDate = <span className='left-align'><i className='material-icons'>check</i></span>;
-      let versionToUpdateTo = '';
-
+      let isUpToDate = '';
+      let versionToUpdateTo = <p><span>Package is uptodate.</span></p>;
+      
       if (packageData.value['dist-tags'].latest !== packageMeta.data.version) {
         versionToUpdateTo = <p><span>New Version: {packageData.value['dist-tags'].latest}</span></p>;
         isUpToDate = <a href="#">Update</a>;

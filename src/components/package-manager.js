@@ -13,7 +13,8 @@ export default class PackageManager extends Component {
       packageJSON: this.props.packageJSON,
       packageInformation: [],
       showAlert: false,
-      showing: 'dependencies'
+      showing: 'dependencies',
+      packagesToUpdateCount: 0,
     };
 
     this.coreDependencies = this.coreDependencies.bind(this);
@@ -40,7 +41,10 @@ export default class PackageManager extends Component {
       const packageMeta = findFromLockFile(prop, this.state.data.dependencies);
 
       packageDetailComponents.push(
-        <Dependencies packageMeta={packageMeta} key={packageMeta.name} />
+        <Dependencies
+          packageMeta={packageMeta}
+          key={packageMeta.name}
+        />
       );
     }
 
@@ -56,24 +60,21 @@ export default class PackageManager extends Component {
   }
 
   render() {
-    let showAlert = '';
-
-    if (this.state.showAlert) {
-      showAlert = <div className="notify peek">Showing {this.state.showing}</div>;
-    }
 
     return (
       <div>
         <Navigation
           coreDependencies={this.coreDependencies}
           devDependencies={this.devDependencies}
+          name={this.state.packageJSON.name}
+          version={this.state.packageJSON.version}
+          showing={this.state.showing}
         />
         <div className='container'>
           <div className='row'>
             {this.state.packageDetailComponents}
           </div>
           <div className='notify peek'>{ this.state.usingMessage }</div>
-          {showAlert}
         </div>
       </div>
     );

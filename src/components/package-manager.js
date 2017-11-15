@@ -2,6 +2,7 @@ import { Component } from 'react';
 import Navigation from './navigation';
 import Dependencies from './package-manager/dependencies';
 import { findFromLockFile } from '../lib/find-package-information';
+import { shouldUpdate } from '../lib/get-package-updates';
 
 export default class PackageManager extends Component {
   constructor(props) {
@@ -12,7 +13,7 @@ export default class PackageManager extends Component {
       data: this.props.json,
       packageJSON: this.props.packageJSON,
       packageInformation: [],
-      showAlert: false,
+      packageUpdateCount: 0,
       showing: 'dependencies'
     };
 
@@ -35,9 +36,14 @@ export default class PackageManager extends Component {
 
   buildPackageMetaComponents(dependencies, showAlert, showing) {
     let packageDetailComponents = [];
+    let packageUpdateCount = 0;
 
     for(const prop in dependencies) {
       const packageMeta = findFromLockFile(prop, this.state.data.dependencies);
+
+      if (shouldUpdate(packageMeta)) {
+        packageUpdateCount += 1;
+      }
 
       packageDetailComponents.push(
         <Dependencies packageMeta={packageMeta} key={packageMeta.name} />
@@ -46,8 +52,7 @@ export default class PackageManager extends Component {
 
     this.setState({
       packageDetailComponents: packageDetailComponents,
-      showAlert: showAlert ? showAlert : false,
-      showing: showing ? showing : 'dependencies',
+      packageUpdateCount: packageUpdateCount
     });
   }
 
@@ -57,10 +62,6 @@ export default class PackageManager extends Component {
 
   render() {
     let showAlert = '';
-
-    if (this.state.showAlert) {
-      showAlert = <div className="notify peek">Showing {this.state.showing}</div>;
-    }
 
     return (
       <div>
@@ -73,7 +74,6 @@ export default class PackageManager extends Component {
             {this.state.packageDetailComponents}
           </div>
           <div className='notify peek'>{ this.state.usingMessage }</div>
-          {showAlert}
         </div>
       </div>
     );

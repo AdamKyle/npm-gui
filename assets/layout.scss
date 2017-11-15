@@ -38,3 +38,13 @@ input[type="text"] {
   position: relative;
   top: 2px;
 }
+
+.version-info, .showing {
+  font-size: 14px;
+  margin-top: 10px;
+  margin-left: 10px;
+}
+
+.clear-float {
+  clear: both;
+}

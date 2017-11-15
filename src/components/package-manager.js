@@ -13,8 +13,9 @@ export default class PackageManager extends Component {
       data: this.props.json,
       packageJSON: this.props.packageJSON,
       packageInformation: [],
-      packageUpdateCount: 0,
-      showing: 'dependencies'
+      showAlert: false,
+      showing: 'dependencies',
+      packagesToUpdateCount: 0,
     };
 
     this.coreDependencies = this.coreDependencies.bind(this);
@@ -46,7 +47,10 @@ export default class PackageManager extends Component {
       }
 
       packageDetailComponents.push(
-        <Dependencies packageMeta={packageMeta} key={packageMeta.name} />
+        <Dependencies
+          packageMeta={packageMeta}
+          key={packageMeta.name}
+        />
       );
     }
 
@@ -61,13 +65,14 @@ export default class PackageManager extends Component {
   }
 
   render() {
-    let showAlert = '';
-
     return (
       <div>
         <Navigation
           coreDependencies={this.coreDependencies}
           devDependencies={this.devDependencies}
+          name={this.state.packageJSON.name}
+          version={this.state.packageJSON.version}
+          showing={this.state.showing}
         />
         <div className='container'>
           <div className='row'>

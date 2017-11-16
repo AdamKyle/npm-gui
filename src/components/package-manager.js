@@ -2,6 +2,7 @@ import { Component } from 'react';
 import Navigation from './navigation';
 import Dependencies from './package-manager/dependencies';
 import { findFromLockFile } from '../lib/find-package-information';
+import { countPackagesToUpdate } from '../lib/count-packages-to-update';
 
 export default class PackageManager extends Component {
   constructor(props) {
@@ -36,10 +37,10 @@ export default class PackageManager extends Component {
 
   buildPackageMetaComponents(dependencies, showAlert, showing) {
     let packageDetailComponents = [];
+    let packagesToUpdate = 0;
 
     for(const prop in dependencies) {
       const packageMeta = findFromLockFile(prop, this.state.data.dependencies);
-
       packageDetailComponents.push(
         <Dependencies
           packageMeta={packageMeta}

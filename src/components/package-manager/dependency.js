@@ -2,7 +2,7 @@ import { Component } from 'react';
 import { connect } from 'react-refetch';
 import DependencyCard from './dependency-card';
 
-class Dependencies extends Component {
+class Dependency extends Component {
 
   constructor(props) {
     super(props);
@@ -18,10 +18,11 @@ class Dependencies extends Component {
     } else if (packageData.fulfilled) {
       let isUpToDate = '';
       let versionToUpdateTo = <p><span>Package is uptodate.</span></p>;
-      
+
       if (packageData.value['dist-tags'].latest !== packageMeta.data.version) {
         versionToUpdateTo = <p><span>New Version: {packageData.value['dist-tags'].latest}</span></p>;
         isUpToDate = <a href="#">Update</a>;
+        this.props.dependencyCount();
       }
 
       return(
@@ -37,4 +38,4 @@ class Dependencies extends Component {
 
 export default connect((props) => {
   return { packageData: 'https://registry.npmjs.org/' + props.packageMeta.name };
-})(Dependencies);
+})(Dependency);

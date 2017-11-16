@@ -1,8 +1,7 @@
 import { Component } from 'react';
 import Navigation from './navigation';
-import Dependencies from './package-manager/dependencies';
+import Dependency from './package-manager/dependency';
 import { findFromLockFile } from '../lib/find-package-information';
-import { shouldUpdate } from '../lib/get-package-updates';
 
 export default class PackageManager extends Component {
   constructor(props) {
@@ -15,7 +14,6 @@ export default class PackageManager extends Component {
       packageInformation: [],
       showAlert: false,
       showing: 'dependencies',
-      packagesToUpdateCount: 0,
     };
 
     this.coreDependencies = this.coreDependencies.bind(this);
@@ -37,17 +35,12 @@ export default class PackageManager extends Component {
 
   buildPackageMetaComponents(dependencies, showAlert, showing) {
     let packageDetailComponents = [];
-    let packageUpdateCount = 0;
 
     for(const prop in dependencies) {
       const packageMeta = findFromLockFile(prop, this.state.data.dependencies);
 
-      if (shouldUpdate(packageMeta)) {
-        packageUpdateCount += 1;
-      }
-
       packageDetailComponents.push(
-        <Dependencies
+        <Dependency
           packageMeta={packageMeta}
           key={packageMeta.name}
         />
@@ -56,7 +49,7 @@ export default class PackageManager extends Component {
 
     this.setState({
       packageDetailComponents: packageDetailComponents,
-      packageUpdateCount: packageUpdateCount
+      showing: showing,
     });
   }
 

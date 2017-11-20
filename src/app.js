@@ -33,6 +33,8 @@ export default class App extends Component {
           nextPageData: dataForComponent.data,
           isYarn: dataForComponent.isYarn,
           packageJSON: dataForComponent.packageJSON,
+          dependencyUpdateCount: dataForComponent.dependencyUpdateCount,
+          devDependencyUpdateCount: dataForComponent.devDependencyUpdateCount,
         });
         break;
       default:
@@ -59,6 +61,8 @@ export default class App extends Component {
           json={this.state.nextPageData}
           isYarn={this.state.isYarn}
           packageJSON={this.state.packageJSON}
+          devDependencyUpdateCount={this.state.devDependencyUpdateCount}
+          dependencyUpdateCount={this.state.dependencyUpdateCount}
         />;
       default:
         // By default just return the startup page.

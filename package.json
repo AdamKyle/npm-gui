@@ -9,24 +9,18 @@
     "async-polling": "^0.2.1",
     "css-loader": "^0.28.7",
     "electron-prebuilt": "^1.4.13",
-    "gallup": "^1.0.3",
     "jsonfile": "^4.0.0",
-    "lodash": "^4.17.4",
     "node-sass": "^4.6.0",
-    "often": "^0.3.2",
-    "promise": "^8.0.1",
     "react": "^16.0.0",
     "react-async-poll": "^1.0.0",
     "react-dom": "^16.0.0",
     "react-refetch": "^1.0.3",
     "rename-keys": "^2.0.1",
     "request": "^2.83.0",
-    "request-promise": "^4.2.2",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.19.0",
+    "util.promisify": "^1.0.0",
     "webpack": "^3.8.1",
-    "webpack-dev-server": "^2.9.4",
-    "yamljs": "^0.3.0",
     "yarn-lock-convert": "^1.0.1"
   },
   "scripts": {
@@ -41,6 +35,8 @@
     "babel-preset-stage-0": "^6.24.1",
     "eslint": "^4.10.0",
     "eslint-plugin-react": "^7.4.0",
-    "react-debounce-input": "^3.1.0"
+    "react-debounce-input": "^3.1.0",
+    "babel-plugin-transform-async-to-generator": "^6.24.1",
+    "babel-polyfill": "^6.26.0"
   }
 }

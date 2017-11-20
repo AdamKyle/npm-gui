@@ -22,7 +22,6 @@ class Dependency extends Component {
       if (packageData.value['dist-tags'].latest !== packageMeta.data.version) {
         versionToUpdateTo = <p><span>New Version: {packageData.value['dist-tags'].latest}</span></p>;
         isUpToDate = <a href="#">Update</a>;
-        this.props.dependencyCount();
       }
 
       return(

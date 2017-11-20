@@ -6,6 +6,7 @@ import {
 
 import { fetchPackageJSON } from '../lib/fetch-package-json';
 import renameKeys from 'rename-keys';
+import { findAllYarnUpdates } from '../lib/find-updates';
 
 
 export default class FetchingData extends Component {
@@ -17,6 +18,8 @@ export default class FetchingData extends Component {
       data: {},
       isYarn: false,
       packageJSON: {},
+      dependencyUpdateCount: 0,
+      devDependenciesUpdateCount: 0,
     };
   }
 
@@ -43,10 +46,24 @@ export default class FetchingData extends Component {
 
       yarnData['dependencies'] = yarnData;
 
-      this.setState({
-        data: yarnData,
-        isYarn: true,
-        packageJSON: this.fetchPackageJsonData(),
+      findAllYarnUpdates(
+        this.fetchPackageJsonData().dependencies, yarnData
+      ).then((dependencies) => {
+        const dependenciesUpdates = dependencies.filter(v => v).length;
+
+        findAllYarnUpdates(
+          this.fetchPackageJsonData().devDependencies, yarnData
+        ).then((devDependencies) => {
+          const devDependenciesUpdates = devDependencies.filter(v => v).length;
+
+          this.setState({
+            data: yarnData,
+            isYarn: true,
+            packageJSON: this.fetchPackageJsonData(),
+            dependencyUpdateCount: dependenciesUpdates,
+            devDependencyUpdateCount: devDependenciesUpdates,
+          });
+        });
       });
     }.bind(this));
   }

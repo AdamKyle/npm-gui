@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import Navigation from './navigation';
-import Dependencies from './package-manager/dependencies';
+import Dependency from './package-manager/dependency';
 import { findFromLockFile } from '../lib/find-package-information';
 
 export default class PackageManager extends Component {
@@ -14,6 +14,7 @@ export default class PackageManager extends Component {
       packageInformation: [],
       showAlert: false,
       showing: 'dependencies',
+      dependencyUpdateCount: 0,
     };
 
     this.coreDependencies = this.coreDependencies.bind(this);
@@ -35,22 +36,27 @@ export default class PackageManager extends Component {
 
   buildPackageMetaComponents(dependencies, showAlert, showing) {
     let packageDetailComponents = [];
-    let packagesToUpdate = 0;
+    let dependencyCount = this.props.dependencyUpdateCount;
 
     for(const prop in dependencies) {
       const packageMeta = findFromLockFile(prop, this.state.data.dependencies);
       packageDetailComponents.push(
-        <Dependencies
+        <Dependency
           packageMeta={packageMeta}
           key={packageMeta.name}
         />
       );
     }
 
+    if (showing !== undefined && showing === 'development dependencies') {
+      console.log('here'); //eslint-disable-line
+    }
+
     this.setState({
       packageDetailComponents: packageDetailComponents,
       showAlert: showAlert ? showAlert : false,
       showing: showing ? showing : 'dependencies',
+      dependencyUpdateCount: dependencyCount,
     });
   }
 
@@ -70,6 +76,7 @@ export default class PackageManager extends Component {
           showing={this.state.showing}
         />
         <div className='container'>
+          <span className="right">Updates: {this.state.dependencyUpdateCount}</span>
           <div className='row'>
             {this.state.packageDetailComponents}
           </div>

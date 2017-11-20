@@ -19,6 +19,8 @@ function createMainWindow() {
   mainWindow.on('closed', () => {
     mainWindow = null;
   });
+
+  mainWindow.webContents.openDevTools();
 }
 
 class MenuBuilder {

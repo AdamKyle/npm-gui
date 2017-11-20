@@ -14,7 +14,8 @@ let options ={
       loader: 'babel-loader',
       exclude: /node_modules/,
       query: {
-          presets: ['es2015', 'react', 'stage-0']
+          presets: ['es2015', 'react', 'stage-0'],
+          plugins: ['transform-async-to-generator']
         }
     },
     {
@@ -43,6 +44,7 @@ let options ={
     })
   ],
   entry: [
+    'babel-polyfill',
     './src/index',
     './assets/layout.scss'
   ]

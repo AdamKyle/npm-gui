@@ -16,14 +16,6 @@ export default class Startup extends Component {
     this.handleOnChange = this.handleOnChange.bind(this);
   }
 
-  handleOnSubmit(e) {
-    if (!this.state.isInvalidPath) {
-      console.log('pathIsCorect'); // eslint-disable-line
-    }
-
-    e.preventDefault();
-  }
-
   handleOnChange(e) {
     e.preventDefault();
 
